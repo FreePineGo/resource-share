@@ -1,0 +1,14 @@
+{
+  "name": "resource-share",
+  "version": "1.0.0",
+  "description": "Static resource sharing website with Excel-based content management",
+  "main": "scripts/build.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "push": "node scripts/baidu-push.js"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5",
+    "eta": "^3.0.0"
+  }
+}

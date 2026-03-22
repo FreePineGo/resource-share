@@ -1,0 +1,10 @@
+<footer class="footer">
+  <p>© 2024 资源站 - 仅供学习交流使用</p>
+</footer>
+
+<!-- Fuse.js from CDN -->
+<script type="module">
+  import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.esm.min.js';
+  window.Fuse = Fuse;
+</script>
+<script src="<%= it.basePath %>js/search.js"></script>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= it.categoryName %> - 资源站 | 网盘资源分享</title>
+  <meta name="description" content="<%= it.categoryName %>资源分享，包含最新<%= it.categoryName %>下载，持续更新">
+  <meta name="keywords" content="<%= it.categoryName %>,<%= it.categoryName %>下载,<%= it.categoryName %>资源">
+  <link rel="canonical" href="https://your-domain.com/category/<%= it.category %>.html">
+  <link rel="stylesheet" href="../css/style.css">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "<%= it.categoryName %>",
+    "description": "<%= it.categoryName %>资源分享",
+    "url": "https://your-domain.com/category/<%= it.category %>.html",
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": <%= it.resources.length %>
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="logo">资源站</a>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <nav class="nav" id="nav">
+        <a href="../category/mobile-games.html" class="nav-link <%= it.category === 'mobile-games' ? 'active' : '' %>">📱 手机游戏</a>
+        <a href="../category/pc-games.html" class="nav-link <%= it.category === 'pc-games' ? 'active' : '' %>">💻 电脑游戏</a>
+        <a href="../category/ps4-games.html" class="nav-link <%= it.category === 'ps4-games' ? 'active' : '' %>">🎮 PS4游戏</a>
+        <a href="../category/switch-games.html" class="nav-link <%= it.category === 'switch-games' ? 'active' : '' %>">🕹️ SWITCH游戏</a>
+        <a href="../category/short-drama.html" class="nav-link <%= it.category === 'short-drama' ? 'active' : '' %>">📺 短剧资源</a>
+      </nav>
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="搜索资源..." id="searchInput" oninput="handleSearch(this.value)">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="category-section">
+    <h1 class="section-title"><%= it.categoryName %></h1>
+    <div class="resource-grid" id="resourceGrid">
+      <% it.resources.forEach(function(item, index) { %>
+      <article class="resource-card" id="<%= item.name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '-') %>" data-page="<%= Math.floor(index / 20) + 1 %>" itemscope itemtype="https://schema.org/SoftwareApplication">
+        <div class="card-cover" onclick="openModal(<%= index %>)">
+          <% if (item.cover) { %>
+          <img src="<%= item.cover.startsWith('http') ? item.cover : '../' + item.cover %>" alt="<%= item.name %>封面" itemprop="image">
+          <% } else { %>
+          <span class="card-icon"><%= it.icon %></span>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title" itemprop="name"><%= item.name %></h2>
+          <div class="card-meta">
+            <% if (item.size) { %><span itemprop="fileSize"><%= item.size %></span><% } %>
+            <% if (item.version) { %><span itemprop="softwareVersion"><%= item.version %></span><% } %>
+          </div>
+          <!-- SEO: 详情直接显示，爬虫可抓取 -->
+          <div class="card-detail" itemprop="description">
+            <p><%= item.description || '暂无简介' %></p>
+          </div>
+          <% if (item.updateTime) { %>
+          <div class="card-update">
+            <time itemprop="dateModified" datetime="<%= item.updateTime %>">更新: <%= item.updateTime %></time>
+          </div>
+          <% } %>
+          <% if (item.note) { %>
+          <div class="card-note"><%= item.note %></div>
+          <% } %>
+          <!-- 隐藏的链接信息供爬虫抓取 -->
+          <div style="display:none;">
+            <span itemprop="applicationCategory"><%= item.categoryName %></span>
+            <a href="<%= item.link %>" itemprop="downloadUrl" rel="nofollow">下载链接</a>
+          </div>
+        </div>
+      </article>
+      <% }); %>
+    </div>
+  </main>
+
+  <% if (it.totalPages > 1) { %>
+  <nav class="pagination" id="pagination" aria-label="分页导航"></nav>
+  <% } %>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-cover" id="modalCover"></div>
+      <div class="modal-body">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-info" id="modalInfo"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div id="modalLink"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2024 资源站 - 仅供学习交流使用</p>
+  </footer>
+
+  <!-- Fuse.js from CDN -->
+  <script type="module">
+    import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.esm.min.js';
+    window.Fuse = Fuse;
+  </script>
+  <script src="../js/search.js"></script>
+
+  <script>
+    const resources = <%= JSON.stringify(it.resources) %>;
+    const totalPages = <%= it.totalPages %>;
+    const currentCategory = '<%= it.category %>';
+  </script>
+</body>
+</html>

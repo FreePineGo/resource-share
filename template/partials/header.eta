@@ -1,0 +1,17 @@
+<header class="header">
+  <div class="header-content">
+    <a href="<%= it.basePath %>index.html" class="logo">资源站</a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav class="nav" id="nav">
+      <a href="<%= it.basePath %>category/mobile-games.html" class="nav-link <%= it.category === 'mobile-games' ? 'active' : '' %>">📱 手机游戏</a>
+      <a href="<%= it.basePath %>category/pc-games.html" class="nav-link <%= it.category === 'pc-games' ? 'active' : '' %>">💻 电脑游戏</a>
+      <a href="<%= it.basePath %>category/ps4-games.html" class="nav-link <%= it.category === 'ps4-games' ? 'active' : '' %>">🎮 PS4游戏</a>
+      <a href="<%= it.basePath %>category/switch-games.html" class="nav-link <%= it.category === 'switch-games' ? 'active' : '' %>">🕹️ SWITCH游戏</a>
+      <a href="<%= it.basePath %>category/short-drama.html" class="nav-link <%= it.category === 'short-drama' ? 'active' : '' %>">📺 短剧资源</a>
+    </nav>
+    <div class="search-box">
+      <input type="text" class="search-input" placeholder="搜索资源..." id="searchInput" oninput="handleSearch(this.value)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+</header>
